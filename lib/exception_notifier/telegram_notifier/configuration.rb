@@ -2,12 +2,12 @@
 
 require 'logger'
 
-module ExceptionNotification
-  module TelegramNotifier
+module ExceptionNotifier
+  class TelegramNotifier
     # Telegram notifier configuration.
     #
     # @example
-    #   ExceptionNotification::TelegramNotifier.configure do |config|
+    #   ExceptionNotifier::TelegramNotifier.configure do |config|
     #     config.bot_token = ENV.fetch('MY_BOT_TOKEN')
     #     config.webhook_url = 'https://example.com/webhook'
     #     config.logger = Logger.new($stdout)
@@ -36,9 +36,9 @@ module ExceptionNotification
       DEFAULT_ADD_CHAT_PROC = lambda do |_|
         raise <<~ERROR_MESSAGE
           You must set `add_chat_proc` configuration option for
-          ExceptionNotification::TelegramNotifier! For example:
+          ExceptionNotifier::TelegramNotifier! For example:
 
-            ExceptionNotification::TelegramNotifier.configure do |config|
+            ExceptionNotifier::TelegramNotifier.configure do |config|
               config.add_chat_proc = ->(chat_id) do
                 # Code to persist `chat_id`.
               end
@@ -49,9 +49,9 @@ module ExceptionNotification
       DEFAULT_REMOVE_CHAT_PROC = lambda do |_|
         raise <<~ERROR_MESSAGE
           You must set `remove_chat_proc` configuration option for
-          ExceptionNotification::TelegramNotifier! For example:
+          ExceptionNotifier::TelegramNotifier! For example:
 
-            ExceptionNotification::TelegramNotifier.configure do |config|
+            ExceptionNotifier::TelegramNotifier.configure do |config|
               config.remove_chat_proc = ->(chat_id) do
                 # Code to remove persisted `chat_id`
               end
@@ -62,9 +62,9 @@ module ExceptionNotification
       DEFAULT_FETCH_CHATS_PROC = lambda do
         raise <<~ERROR_MESSAGE
           You must set `fetch_chats_proc` configuration option for
-          ExceptionNotification::TelegramNotifier! For example:
+          ExceptionNotifier::TelegramNotifier! For example:
 
-            ExceptionNotification::TelegramNotifier.configure do |config|
+            ExceptionNotifier::TelegramNotifier.configure do |config|
               config.fetch_chats_proc = ->(chat_id) do
                 # Code to fetch all persisted chat IDs.
               end

@@ -1,6 +1,10 @@
 AllCops:
   TargetRubyVersion: 2.3
 
+# Style cops
+Style/AndOr:
+  EnforcedStyle: conditionals
+
 Style/Documentation:
   Exclude:
     - 'spec/**/*'

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'exception_notification/telegram_notifier'
+require 'exception_notifier/telegram_notifier'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

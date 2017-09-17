@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 
-RSpec.describe ExceptionNotification::TelegramNotifier do
+RSpec.describe ExceptionNotifier::TelegramNotifier do
   it 'has a version number' do
-    expect(ExceptionNotification::TelegramNotifier::VERSION).not_to be nil
+    expect(ExceptionNotifier::TelegramNotifier::VERSION).not_to be nil
   end
 
   it 'does something useful' do
