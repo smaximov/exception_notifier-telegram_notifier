@@ -8,3 +8,4 @@ Style/AndOr:
 Style/Documentation:
   Exclude:
     - 'spec/**/*'
+    - 'examples/**/*'
