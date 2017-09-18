@@ -27,6 +27,10 @@ module ExceptionNotifier
         return process(req) if webhook_request?(req)
 
         @app.call(env)
+      rescue StandardError => e
+        TelegramNotifier.logger.error(e.message)
+        TelegramNotifier.logger.error(e.backtrace.join("\n"))
+        @app.call(env)
       end
 
       private
