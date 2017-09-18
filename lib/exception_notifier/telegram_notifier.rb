@@ -73,10 +73,10 @@ module ExceptionNotifier
     private
 
     def send_message(uri, chat_id, message)
-      data = JSON.dump(chat_id: chat_id, text: message, parse_mode: 'Markdown')
+      data = JSON.dump(chat_id: chat_id, text: message)
 
       Net::HTTP.post(uri, data, Webhook::HEADERS).tap do |res|
-        logger.error("TelegramNotifier: request failed: #{res.body}") if
+        self.class.logger.error("TelegramNotifier: send failed: #{res.body}") if
           res.code != 200
       end
     end
@@ -87,9 +87,7 @@ module ExceptionNotifier
 
         Backtrace:
 
-        ```
         #{exception.backtrace[0..10].join("\n")}
-        ```
       MESSAGE
     end
   end
