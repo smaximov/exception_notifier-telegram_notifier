@@ -2,7 +2,7 @@
 
 module ExceptionNotifier
   class TelegramNotifier
-    class Middleware
+    class Webhook
       # @api private
       class Message
         ADD = 'add'

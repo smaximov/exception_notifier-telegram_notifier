@@ -2,7 +2,7 @@
 
 module ExceptionNotifier
   class TelegramNotifier
-    class Middleware
+    class Webhook
       # @api private
       class Reply
         METHOD = 'sendMessage'
@@ -16,7 +16,7 @@ module ExceptionNotifier
 
           body = JSON.dump(method: METHOD, chat_id: chat_id, text: text)
 
-          @rack_reply = [200, Middleware::CONTENT_TYPE_HEADER, [body]]
+          @rack_reply = [200, Webhook::HEADERS, [body]]
 
           freeze
         end

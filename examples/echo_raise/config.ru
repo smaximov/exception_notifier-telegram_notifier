@@ -3,6 +3,6 @@
 require 'exception_notification'
 require_relative 'echo_raise'
 
-use ExceptionNotifier::TelegramNotifier::Middleware
+use ExceptionNotifier::TelegramNotifier::Webhook
 use ExceptionNotification::Rack, telegram: {}
 run EchoRaise.new

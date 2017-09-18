@@ -8,8 +8,8 @@ module ExceptionNotifier
   # Telegram notifier for the exception_notification gem.
   class TelegramNotifier
     require 'exception_notifier/telegram_notifier/configuration'
-    require 'exception_notifier/telegram_notifier/middleware'
     require 'exception_notifier/telegram_notifier/version'
+    require 'exception_notifier/telegram_notifier/webhook'
 
     class << self
       # Configure Telegram notifier.
@@ -82,7 +82,7 @@ module ExceptionNotifier
 
     def send_message(uri, chat_id, message)
       data = JSON.dump(chat_id: chat_id, text: message, parse_mode: 'Markdown')
-      Net::HTTP.post(uri, data, Middleware::CONTENT_TYPE_HEADER)
+      Net::HTTP.post(uri, data, Webhook::HEADERS)
     end
   end
 end

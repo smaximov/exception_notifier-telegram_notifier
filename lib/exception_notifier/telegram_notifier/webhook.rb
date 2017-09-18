@@ -7,15 +7,15 @@ require 'uri'
 
 module ExceptionNotifier
   class TelegramNotifier
-    # Rack Middleware for Telegram bot webhook.
-    class Middleware
+    # Rack Middleware for the Telegram bot webhook.
+    class Webhook
       CONTENT_TYPE = 'application/json'
 
-      CONTENT_TYPE_HEADER = { ::Rack::CONTENT_TYPE => CONTENT_TYPE }.freeze
+      HEADERS = { ::Rack::CONTENT_TYPE => CONTENT_TYPE }.freeze
 
-      require 'exception_notifier/telegram_notifier/middleware/command'
-      require 'exception_notifier/telegram_notifier/middleware/message'
-      require 'exception_notifier/telegram_notifier/middleware/reply'
+      require 'exception_notifier/telegram_notifier/webhook/command'
+      require 'exception_notifier/telegram_notifier/webhook/message'
+      require 'exception_notifier/telegram_notifier/webhook/reply'
 
       def initialize(app)
         @app = app
