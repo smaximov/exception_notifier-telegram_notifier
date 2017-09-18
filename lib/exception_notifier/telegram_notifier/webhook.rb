@@ -28,6 +28,7 @@ module ExceptionNotifier
 
         @app.call(env)
       rescue StandardError => e
+        TelegramNotifier.logger.error("#{self.class.name}: unexpected error:")
         TelegramNotifier.logger.error(e.message)
         TelegramNotifier.logger.error(e.backtrace.join("\n"))
         @app.call(env)
@@ -44,7 +45,13 @@ module ExceptionNotifier
       end
 
       def webhook_url?(host, path)
-        webhook_url = URI(TelegramNotifier.webhook_url)
+        webhook_url = TelegramNotifier.webhook_url or
+          begin
+            TelegramNotifier.logger.warn('Telegram bot webhook URL is unset!')
+            return false
+          end
+
+        webhook_url = URI(webhook_url)
         webhook_url.host == host && webhook_url.path == path
       end
 

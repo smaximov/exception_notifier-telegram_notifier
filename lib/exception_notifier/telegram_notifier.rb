@@ -39,7 +39,7 @@ module ExceptionNotifier
       #
       # @raise [RuntimeError] if bot webhook URL is unset.
       def webhook_url
-        config.webhook_url or raise 'Telegram bot webhook URL is unset!'
+        config.webhook_url
       end
 
       # (see Configuration#logger)
