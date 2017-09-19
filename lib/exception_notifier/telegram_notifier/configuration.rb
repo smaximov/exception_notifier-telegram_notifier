@@ -4,6 +4,8 @@ require 'logger'
 
 module ExceptionNotifier
   class TelegramNotifier
+    require 'exception_notifier/telegram_notifier/formatter'
+
     # Telegram notifier configuration.
     #
     # @example
@@ -27,6 +29,11 @@ module ExceptionNotifier
     #     config.fetch_chats_proc = -> do
     #       TelegramChat.all.pluck(:chat_id)
     #     end
+    #   end
+    #
+    # @example Override default notification message formatter
+    #   ExceptionNotifier::TelegramNotifier.configure do |config|
+    #     config.formatter = ->(exception, _data) { exception.message }
     #   end
     class Configuration
       DEFAULT_LOGGER = Logger.new(nil)
@@ -72,6 +79,8 @@ module ExceptionNotifier
         ERROR_MESSAGE
       end
 
+      DEFAULT_FORMATTER = Formatter.new.freeze
+
       DEFAULT_CONFIG = {
         bot_token: nil,
         webhook_url: nil,
@@ -79,7 +88,8 @@ module ExceptionNotifier
         authorize_proc: DEFAULT_AUTHORIZE_PROC,
         add_chat_proc: DEFAULT_ADD_CHAT_PROC,
         remove_chat_proc: DEFAULT_REMOVE_CHAT_PROC,
-        fetch_chats_proc: DEFAULT_FETCH_CHATS_PROC
+        fetch_chats_proc: DEFAULT_FETCH_CHATS_PROC,
+        formatter: DEFAULT_FORMATTER
       }.freeze
 
       def initialize(options)
@@ -101,25 +111,28 @@ module ExceptionNotifier
       # from a chat is authorized. If not set, consider all requests
       # authorized.
       #
-      # @return [Proc]
+      # @return [#call]
       attr_accessor :authorize_proc
 
       # Proc that persists chat ID of the sender when the `/start` message is
       # sent to the bot.
       #
-      # @return [Proc]
+      # @return [#call]
       attr_accessor :add_chat_proc
 
       # Proc that deletes chat ID of the sender when the `/stop` message is sent
       # to the bot.
       #
-      # @return [Proc]
+      # @return [#call]
       attr_accessor :remove_chat_proc
 
       # Proc that fetches all persisted chat IDs.
       #
-      # @return [Proc]
+      # @return [#call]
       attr_accessor :fetch_chats_proc
+
+      # @return [#call] notification message formatter.
+      attr_accessor :formatter
     end
   end
 end

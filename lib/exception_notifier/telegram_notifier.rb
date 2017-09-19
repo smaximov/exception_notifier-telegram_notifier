@@ -60,8 +60,8 @@ module ExceptionNotifier
 
     def initialize(_options); end
 
-    def call(exception, _options = {})
-      message = format_message(exception)
+    def call(exception, data = {})
+      message = self.class.config.formatter.call(exception, data)
 
       uri = self.class.request_uri('sendMessage')
 
@@ -79,16 +79,6 @@ module ExceptionNotifier
         self.class.logger.error("TelegramNotifier: send failed: #{res.body}") if
           res.code != 200
       end
-    end
-
-    def format_message(exception)
-      <<~MESSAGE
-        Exception: #{exception.message}
-
-        Backtrace:
-
-        #{exception.backtrace[0..10].join("\n")}
-      MESSAGE
     end
   end
 end
