@@ -1,6 +1,10 @@
 AllCops:
   TargetRubyVersion: 2.3
 
+# Metrics
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
 # Style cops
 Style/AndOr:
   EnforcedStyle: conditionals

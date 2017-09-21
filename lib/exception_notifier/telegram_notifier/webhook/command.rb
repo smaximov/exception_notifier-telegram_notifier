@@ -22,11 +22,12 @@ module ExceptionNotifier
 
         # @api private
         class Add < Base
-          def initialize(msg)
-            @authorized =
-              TelegramNotifier.config.authorize_proc.call(msg.params)
+          def initialize(msg, logger, add_chat, authorize)
+            @authorized = authorize.call(msg.params)
+            @logger = logger
+            @add_chat = add_chat
 
-            super
+            super(msg)
           end
 
           protected
@@ -46,7 +47,7 @@ module ExceptionNotifier
           end
 
           def unauthorized(chat_id)
-            TelegramNotifier.logger.warn(<<~LOG_MSG)
+            @logger.warn(<<~LOG_MSG)
               TelegramNotifier: /add #{chat_id}: unauthorized.
             LOG_MSG
 
@@ -54,11 +55,11 @@ module ExceptionNotifier
           end
 
           def add_chat(chat_id)
-            TelegramNotifier.logger.debug(<<~LOG_MSG)
+            @logger.debug(<<~LOG_MSG)
               TelegramNotifier: /add #{message.chat_id}: authorized.
             LOG_MSG
 
-            TelegramNotifier.config.add_chat_proc.call(chat_id)
+            @add_chat.call(chat_id)
 
             Reply.new(message.chat_id, 'Added.')
           end
@@ -66,14 +67,21 @@ module ExceptionNotifier
 
         # @api private
         class Remove < Base
+          def initialize(msg, logger, remove_chat)
+            @logger = logger
+            @remove_chat = remove_chat
+
+            super(msg)
+          end
+
           def call
             chat_id = message.chat_id
 
-            TelegramNotifier.logger.debug(<<~LOG_MSG)
+            @logger.debug(<<~LOG_MSG)
               TelegramNotifier: /remove #{chat_id}.
             LOG_MSG
 
-            TelegramNotifier.config.remove_chat_proc.call(chat_id)
+            @remove_chat.call(chat_id)
 
             Reply.new(chat_id, 'Removed.')
           end
