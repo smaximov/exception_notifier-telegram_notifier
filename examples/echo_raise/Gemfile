@@ -4,4 +4,6 @@ source 'https://rubygems.org'
 
 gem 'exception_notification', '~> 4.2.2'
 gem 'exception_notifier-telegram_notifier', path: '../..'
-gem 'rack', '2.0.3'
+gem 'rack', '~> 2.0.3'
+gem 'rotp', '~> 3.3.0'
+gem 'rqrcode', '~> 0.10.1'
